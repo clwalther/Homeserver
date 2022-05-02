@@ -1,0 +1,269 @@
+/* anti mark */
+.nomark {
+    user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+/* universal vals */
+:root {
+    --white: #edeff1;
+    --grey : #8b949e;
+    --darkgrey:  #30363d;
+    --lightgrey: #bfc2c7;
+    --black: #0d1117;
+    
+    --warning: #f1e05a;
+    --info:    #3790f9;
+
+    --negative: #f78166;
+    --positive: #238636;
+
+    --accent: #161b22;
+
+    --BdHd-hght: 32px;
+    --BdHd-pddng-vrtcl:  16px;
+    --BdHd-pddng-hrzntl: 32px;
+    --BdHdDv-hght: 30px;
+    --BdHdDvLblFrmInpt-brdr-wdth:  1px;
+    --BdHdDvLblFrmInpt-brdr-crrct: 0.8;
+    --BdHdDvLblFrmInpt-pddng-hrzntl: 15px;
+    /* ===  CAUTION start === */
+    --BdHdDvLblFrmDivInpt-n: 2;
+    --BbHdNvDvDvFrmInpt-n: 4;
+    /* ===  CAUTION  end  === */
+    --BdHdDvLblFrmDivInpt-hght: 30px;
+    --BdHdNvA-mrgn-vrtcl:  15px;
+    --BdHdNvDv-mrgn-vrtcl: 10px;
+    --BbHdNvDvDvFrmInpt-hght: 30px;
+    --BdHdNvDvDv-wdth: 115px; 
+}
+/* body */
+body {
+    color: var(--lightgrey);
+    background-color: var(--black);
+
+    font-family: 'Cabin', sans-serif;
+}
+    /* header */
+    header {
+        position: absolute;
+
+        top:  0px;
+        left: 0px;
+
+        height: var(--BdHd-hght);
+        width:  calc(100% - var(--BdHd-pddng-hrzntl) * 2);
+
+        padding: var(--BdHd-pddng-vrtcl);
+        padding-left:  var(--BdHd-pddng-hrzntl);
+        padding-right: var(--BdHd-pddng-hrzntl);
+
+        display: flex;
+        align-content: center;
+
+        background-color: var(--black);
+    }
+        header a {
+            padding-right: 16px;
+        }
+        header a img {
+            height: 32px;
+            width:  32px;
+        }
+        header div {
+            height: var(--BdHdDv-hght);
+
+            display: inline-flex;
+            align-content: center;
+        }
+            header div label {
+                height: 100%;
+                width: 272px;
+
+                margin-right: var(--BdHdNvA-mrgn-vrtcl);
+
+                display: -webkit-inline-box;
+
+                transition: width .2s ease-in-out;
+            }
+            header div label:focus-within {
+                width: 450px;
+            }
+                header div label form {
+                    height: 100%;
+                    width:  calc(100% - var(--BdHdDvLblFrmInpt-pddng-hrzntl) * 2);
+
+                    margin-right: calc(var(--BdHdDvLblFrmInpt-pddng-hrzntl) * 2);
+                }
+                    header div label form input {
+                        height: calc(100% - var(--BdHdDvLblFrmInpt-brdr-wdth) * var(--BdHdDvLblFrmInpt-brdr-crrct) * 2);
+                        width:  calc(100% - var(--BdHdDvLblFrmInpt-brdr-wdth) * var(--BdHdDvLblFrmInpt-brdr-crrct) * 2);
+
+                        border: 1px solid var(--darkgrey);
+                        border-radius: 5px;
+                        
+                        padding: 0px;
+                        padding-left:  var(--BdHdDvLblFrmInpt-pddng-hrzntl);
+                        padding-right: var(--BdHdDvLblFrmInpt-pddng-hrzntl);
+                        
+                        color: var(--white);
+                        background-color: var(--black);
+
+                        outline: 0px solid var(--darkgrey);
+
+                        font-size: 14px;
+
+                        transition: all .2s ease-in-out;
+                    }
+                    header div label form input:focus {
+                        outline: 1.5px solid var(--info);
+                        border-bottom-left-radius:  0px;
+                        border-bottom-right-radius: 0px;
+                    }
+                    header div label form div {
+                        width: calc(100% + var(--BdHdDvLblFrmInpt-pddng-hrzntl) * 2 - var(--BdHdDvLblFrmInpt-brdr-crrct) * var(--BdHdDvLblFrmInpt-brdr-wdth));
+                        height: 0px;
+                        
+                        display: block;
+
+                        border: 0px solid var(--darkgrey);
+                        border-radius: 5px;
+                        border-top-left-radius:  0px;
+                        border-top-right-radius: 0px;
+
+                        overflow: hidden;
+                        
+                        transition: all .3s ease-in-out;
+                        transition-delay: .15s;
+                    }
+                    header div label:focus-within > form div {
+                        border: var(--BdHdDvLblFrmInpt-brdr-wdth) solid var(--darkgrey);
+
+                        border-top-left-radius:  0px;
+                        border-top-right-radius: 0px;
+
+                        height: calc(var(--BdHdDvLblFrmDivInpt-hght) * var(--BdHdDvLblFrmDivInpt-n));
+                    }
+                        header div label div input {
+                            height: var(--BdHdDvLblFrmDivInpt-hght);
+                            width:  100%;
+
+                            outline: 1px solid var(--darkgrey);
+                            border-radius: 0px;
+
+
+                            text-align: start;
+                            border-width: 0px;
+                        }
+                        header div label div input:hover, header div label div input:focus {
+                            outline: 1px solid var(--darkgrey);
+                            background-color: var(--info);
+                        }
+            header div nav {
+                position: relative;
+
+                height: var(--BdHdDv-hght);
+
+                display: flex;
+                align-items: center;
+            }
+                header div nav a {
+                    font-weight: 700 !important;
+                }
+        header nav {
+            position: absolute;
+
+            right: 10px;
+
+            height: var(--BdHdDv-hght);
+
+            display: flex;
+            align-items: center;
+        }
+            header nav a {
+                margin-left:  var(--BdHdNvA-mrgn-vrtcl);
+                margin-right: var(--BdHdNvA-mrgn-vrtcl);
+
+                text-decoration: none;
+
+                font-size: 16px;
+                font-weight: 500;
+
+                color: var(--white);
+
+                transition: color .1s;
+            }
+            header nav a:hover {
+                color: var(--lightgrey);
+            }
+            header nav div {
+                height: 100%;
+                width:  40px;
+
+                margin-left:  var(--BdHdNvDv-mrgn-vrtcl);
+                margin-right: var(--BdHdNvDv-mrgn-vrtcl);
+
+                cursor: pointer;
+            }
+                header nav div img, header nav div svg {
+                    height: 20px;
+                    margin-top: 5px;
+                    fill: var(--white);
+                }
+                header nav div img {
+                    border-radius: 50%;
+                }
+                header div:hover > svg {
+                    fill: var(--lightgrey);
+                }
+                header nav div div {
+                    position: relative;
+                    top: 32px;
+
+                    width: var(--BdHdNvDvDv-wdth);
+                    height: 0px;
+                    
+                    display: block;
+
+                    border: 0px solid var(--darkgrey);
+                    border-radius: 5px;
+
+                    overflow: hidden;
+                    
+                    transition: all .3s ease-in-out;
+                    transition-delay: .1s;
+
+                    margin-left: calc(var(--BdHdNvDvDv-wdth) * -1);
+                }
+                header nav div:hover > div, header nav div div:hover {
+                    height: calc(var(--BbHdNvDvDvFrmInpt-hght) * var(--BbHdNvDvDvFrmInpt-n));
+                    border: 1px solid var(--darkgrey);
+                }
+                    header nav div div button {
+                        width: 100%;
+                        height: var(--BbHdNvDvDvFrmInpt-hght);
+
+                        color: var(--white);
+                        background-color: var(--black);
+
+                        outline: 1px solid var(--darkgrey);
+
+                        margin: 0px;
+
+                        border: 0px;
+
+                        text-align: start;
+
+                        font-size: 14px;
+                        
+                        cursor: pointer;
+                    }
+                    header nav div button:hover {
+                        background-color: var(--info);
+                        outline: 1px solid var(--darkgrey);
+                    }
+    /* section */
+
+    /* footer */
