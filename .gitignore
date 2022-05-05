@@ -1,1 +1,3 @@
 env
+/Frontend/assets/DATABASE/USERIMG/*.svg
+/Backend/DATABASE/SHARE/*.db
