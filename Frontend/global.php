@@ -1,6 +1,6 @@
 <?php
-    $PATH      = "/home/pi/Public/Home/Backend/DATABASE/SHARE/";
-    $ERROR_LOG = "/home/pi/Public/Home/Backend/error.log";
+    $PATH      = "/home/pi/Public/Homeserver/Backend/DATABASE/SHARE/";
+    $ERROR_LOG = "/home/pi/Public/Homeserver/Backend/error.log";
 
     $SERVERNAME   = 'localhost';
     $USERLOGIN    = 'YSbNNzN8p#ndxMe?';
@@ -69,7 +69,8 @@
 
     function SEND_EMAIL($TYPE, $RECEIVER, $CONTEXT) {
         if($CONTEXT > 99999) {
-            shell_exec("/bin/python /home/pi/Public/Home/App/Auth.py ".$TYPE." ".$RECEIVER." ".$CONTEXT."");
+            $query = "/bin/python /home/pi/Public/Homeserver/App/Auth.py ".$TYPE." ".$RECEIVER." ".$CONTEXT."";
+            shell_exec($query);
         }
     }
     
@@ -100,7 +101,7 @@
         }
         $DATA .= '</svg>';
         
-        $file = fopen('/home/pi/Public/Home/Frontend/assets/DATABASE/USERIMG/'.$USERID.'.svg', "w");
+        $file = fopen('/home/pi/Public/Homeserver/Frontend/assets/DATABASE/USERIMG/'.$USERID.'.svg', "w");
         fwrite($file, $DATA);
         fclose($file);
     }

@@ -1,14 +1,12 @@
 import sys
 import smtplib
 from email.message import EmailMessage
+from Env import ENV
 
 
 def main():
-    with open('./env', 'r') as f:
-        DATA = f.read()
-
-    EMAIL    = DATA.split("EMAIL: ")[1].split("\n")[0]
-    PASSWORD = DATA.split("PASSWORD: ")[1].split("\n")[0]
+    global ENV
+    env = ENV()
 
     FILE     = sys.argv[0]
     TYPE     = sys.argv[1]
@@ -28,7 +26,7 @@ def main():
         msg.set_content(f"\n2FAUTH: {CODE}")
 
     with smtplib.SMTP_SSL('smtp.gmail.com',465) as smtp:
-        smtp.login(EMAIL, PASSWORD)
+        smtp.login(env.EMAIL, env.PASSWORD)
         smtp.send_message(msg)
 
 if __name__ == '__main__':
