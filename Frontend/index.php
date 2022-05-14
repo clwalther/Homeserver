@@ -35,7 +35,7 @@
             </label>
             <nav>
                 <a href="./share">Share</a>
-                <a href="./lorem">Lorem</a>
+                <a href="./printer">Printer</a>
                 <a href="./lorem">Lorem</a>
             </nav>
         </div>
