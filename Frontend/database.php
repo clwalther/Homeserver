@@ -41,8 +41,7 @@ class Database
         $COLUMNS = join(', ', $COLUMNS);
         $LIKE    = $this->formatLike($LIKE);
 
-        $query  = "SELECT ".$COLUMNS." FROM ".$TABLE." ".$LIKE.";";
-        print($query."\n");
+        $query  = "SELECT ".$COLUMNS." FROM ".$TABLE."".$LIKE.";";
         $result = $this->CONNECTION->query($query);
         
         return $result;
@@ -78,7 +77,7 @@ class Database
             foreach($array as $key => $value) {
                 array_push($REQUIRED, $key."='".$value."'");
             }
-            $LIKE  = "WHERE ";
+            $LIKE  = " WHERE ";
             $LIKE .= join(' AND ', $REQUIRED);
         } else {
             $LIKE  = "";

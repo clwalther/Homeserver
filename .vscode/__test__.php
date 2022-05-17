@@ -69,9 +69,10 @@
 
             $REPORT .= "    METHODS TOTAL:   ".$this->total."\n\n";
 
-            $REPORT .= ">>> ERROR MESSAGE(S) <<<";
+            $REPORT .= ">>> ERROR MESSAGE(S) <<<\n\n";
             $REPORT .= $this->generateErrorMsgs($CLASS)."\n";
 
+            print("\n\n");
             print($REPORT);
         }
 

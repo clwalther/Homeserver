@@ -22,22 +22,23 @@ class Client
         $database = $GLOBALS["database"];
         // AUTH
         $TABLE   = "USERS";
-        $COLUMNS = "*";
+        $COLUMNS = ["*"];
         $LIKE    = [
             "EMAIL"    => $EMAIL,
             "PASSWORD" => $PASSWORD
         ];
 
         $result = $database->select($TABLE, $COLUMNS, $LIKE);
-
         if ($result->num_rows == 1) {
             // AUTH SUCCCESS
             while ($answer = $result->fetch_assoc()) {
                 $this->getDataFromQuery($answer);
                 // REDIRECT
+                return 0; # 0 => no errors;
             }
         } else {
-            $error->clientEmailPasswordIncorrect();
+            // $error->clientEmailPasswordIncorrect();
+            return 1; # 1 => clientEmailPasswordIncorrect;
         }
     }
 
@@ -69,13 +70,16 @@ class Client
                 ];
                 $database->insert("TEMP", $ARRAY);
                 // REDIRECT
+                return 0; # 0 => no errors;
             } else {
                 // EMAIL ALREADY USED
-                $error->clientEmailAlreadyUsed();
+                // $error->clientEmailAlreadyUsed();
+                return 2; # 2 => clientEmailAlreadyUsed;
             }
         } else {
             // PASSWORD AND REPEATED PASSWORD ARE NOT EQUAL
-            $error->clientPasswordIsNotRepeatedPassword();
+            // $error->clientPasswordIsNotRepeatedPassword();
+            return 1; # 1 => clientPasswordIsNotRepeatedPassword;
         }
     }
     
@@ -102,11 +106,13 @@ class Client
                 while ($answer = $result->fetch_assoc()) {
                     $this->getDataFromQuery($answer);
                     // REDIRECT
+                    return 0; # 0 => success;
                 }
                 
             }
         } else {
-            $error->clientEmailAuthIncorrect();
+            // $error->clientEmailAuthIncorrect();
+            return 1; # 1 => clientEmailAuthIncorrect;
         }
     }
     

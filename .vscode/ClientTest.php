@@ -4,30 +4,113 @@
 
     class ClientTest
     {
-        
-        // singIn()
-        function testSignIn() {
-            // get
-            // when
-            // then
-            return 1;
+        private $CODE     = 123456;
+        private $USERNAME = "John Smith";
+        private $EMAIL    = "john@smith.uk";
+        private $PASSWORD = "password12345";
+
+        // utils
+        function createDefaultUser() {
+            $database = $GLOBALS["database"];
+            $VALUES = [
+                "USERNAME" => $this->USERNAME,
+                "EMAIL"    => $this->EMAIL,
+                "TYPE"     => "USER",
+                "PASSWORD" => $this->PASSWORD,
+                "AUTH"     => 0
+            ];
+            $database->insert("USERS", $VALUES);
+        }
+        function removeDefaultUser() {
+            $database = $GLOBALS["database"];
+            $VALUES = [ "EMAIL"    => $this->EMAIL ];
+            $database->delete("USERS", $VALUES);
+        }
+        function createTempUser() {
+            $database = $GLOBALS["database"];
+            $VALUES = [
+                "CODE"     => $this->CODE,
+                "USERNAME" => $this->USERNAME,
+                "EMAIL"    => $this->EMAIL,
+                "PASSWORD" => $this->PASSWORD,
+                "AUTH"     => 0
+            ];
+            $database->insert("TEMP", $VALUES);
+        }
+        function removeTempUser() {
+            $database = $GLOBALS["database"];
+            $LIKE = [ "EMAIL" => $this->EMAIL ];
+            $database->delete("TEMP", $LIKE);
         }
 
-        // signUp()
-        function SuccessfulSignUp() {
+        // singIn()
+        function testSucessfulSignIn() {
             // get
-            $client   = new Client(NULL, NULL, NULL, NULL, NULL);
-            $database = $GLOBALS["database"];
-            $USERNAME = "John Smith";
-            $EMAIL    = "john@smith.uk";
-            $PASSWORD = "password12345";
+            $client = new Client(NULL, NULL, NULL, NULL, NULL);
+            $this->createDefaultUser();
             // when
-            $client->signUp($USERNAME, $EMAIL, $PASSWORD, $PASSWORD);
+            $errorCode = $client->signIn($this->EMAIL, $this->PASSWORD);
             // then
-            $LIKE = [ "EMAIL" => $EMAIL ];
+            $this->removeDefaultUser();
+            if ($errorCode == 0) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        function testFailSignIn() {
+            // get
+            $client = new Client(NULL, NULL, NULL, NULL, NULL);
+            $this->createDefaultUser();
+            // when
+            $errorCode = $client->signIn($this->USERNAME, "incorrect password");
+            // then
+            $this->removeDefaultUser();
+            if ($errorCode == 1) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        
+        // signUp()
+        function testSuccessfulSignUp() {
+            // get
+            $client = new Client(NULL, NULL, NULL, NULL, NULL);
+            $database = $GLOBALS["database"];
+            // when
+            $errorCode = $client->signUp($this->USERNAME, $this->EMAIL, $this->PASSWORD, $this->PASSWORD);
+            $LIKE   = [ "EMAIL" => $this->EMAIL ];
             $result = $database->select("TEMP", ["*"], $LIKE);
-            
-            if ($result->num_rows == 1) {
+            // then
+            $this->removeTempUser();
+            if ($result->num_rows == 1 && $errorCode == 0) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        function testEmailAlreadyUsedSignUp() {
+            // get
+            $client = new Client(NULL, NULL, NULL, NULL, NULL);
+            $this->createDefaultUser();
+            // when
+            $errorCode = $client->signUp($this->USERNAME, $this->EMAIL, $this->PASSWORD, $this->PASSWORD);
+            // then
+            $this->removeDefaultUser();
+            if ($errorCode == 2) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        function testNotDublicatePasswordSignUp() {
+            // get
+            $client = new Client(NULL, NULL, NULL, NULL, NULL);
+            // when
+            $errorCode = $client->signUp($this->USERNAME, $this->EMAIL, $this->PASSWORD, "");
+            // then
+            if ($errorCode == 1) {
                 return 0;
             } else {
                 return 1;
@@ -37,26 +120,34 @@
         // authEmailToAccount()
         function testAuthEmailToAccount() {
             // get
-            $client   = new Client(NULL, Null, NULL, NULL, NULL);
+            $client = new Client(NULL, Null, NULL, NULL, NULL);
             $database = $GLOBALS["database"];
-            $result   = $database->select("TEMP", ["CODE"], NULL);
-            $code = $result->fetch_assoc()["CODE"];
+            $this->createTempUser();
             // when
-            $client->authEmailToAccount($code);
-            // then
-            $LIKE = [ "CODE" => $code ];
+            $errorCode = $client->authEmailToAccount($this->CODE);
+            $LIKE = [ "CODE" => $this->CODE ];
             $result = $database->select("TEMP", ["*"], $LIKE);
-            $this->cleanUpAuthEmailToAccount();
-            if ($result->num_rows == 0) {
+            // then
+            $this->removeDefaultUser();
+            if ($result->num_rows == 0 && $errorCode == 0) {
                 return 0;
             } else {
                 return 1;
             }
         }
-        function cleanUpAuthEmailToAccount() {
-            $database = $GLOBALS["database"];
-            $LIKE = [ "EMAIL" => "john@smith.uk" ];
-            $database.delete("USERS", $LIKE);
+        function testIncorrectAuthEmailToAccount() {
+            // get
+            $client = new Client(NULL, Null, NULL, NULL, NULL);
+            $this->createTempUser();
+            // when
+            $errorCode = $client->authEmailToAccount(234567);
+            // then
+            $this->removeTempUser();
+            if ($errorCode == 1) {
+                return 0;
+            } else {
+                return 1;
+            }
         }
 
         // generateCode()
@@ -102,6 +193,6 @@
     }
 
     $clientTest = new ClientTest();
-    $unitTest = new UnitTests();
+    $unitTest   = new UnitTests();
     $unitTest->run($clientTest);
 ?>

@@ -69,8 +69,6 @@
     $USERPASSWORD = $env->getEnv("USERPASSWORD");
     $DATABASENAME = $env->getEnv("DATABASENAME");
 
-    print("\n\n");
-
     $database = new Database($SERVERNAME, $DATABASENAME, $USERLOGIN, $USERPASSWORD);
     $database->connect();
 ?>
