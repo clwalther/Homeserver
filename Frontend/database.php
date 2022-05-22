@@ -100,7 +100,7 @@ class Database
         $error = $GLOBALS["error"];
 
         if ($return == FALSE) {
-            // $error->mysqlCouldNotChangeDatabase($action);
+            $error->mysqlCouldNotChangeDatabase($action);
         }
     }
 }

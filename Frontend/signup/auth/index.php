@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homeserver | Auth</title>
-    
+    <title>Homeserver | Auth Sign Up</title>
+    <link rel="shortcut icon" href="../../assets/icons/favicon.ico" type="image/x-icon">
+
     <!-- global css -->
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/color.css">
@@ -19,22 +20,25 @@
     <?php
         include '../../global.php'; 
 
-        // GET CODE
-        $query  = "SELECT * FROM ".$TABLENAME1." WHERE EMAIL='".$_COOKIE["EMAIL"]."' AND USERNAME='".$_COOKIE["USERNAME"]."';";
-        $return = $CONNECTION->query($query);
-        while($row = $return->fetch_assoc()) {
-            $CODE = $row["CODE"];
-        }
-
         // LISTEN FOR POST_REQUEST
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             // INIT
-            $INPUT  = $_POST["CODE"];
-            
-            AUTH_EMAIL($INPUT);
-        } else {
-            SEND_EMAIL("SIGNUP", $_COOKIE["EMAIL"], $CODE);
+            $CODE = utf8_encode($_POST["CODE"]);
+            // CALL
+            $client->authEmailToAccount($CODE);
         }
+
+        function send() {
+            $client   = $GLOBALS["client"];
+            $database = $GLOBALS["database"];
+            // INIT
+            $TYPE     = "SIGNUP";
+            $RECEIVER = $_COOKIE["EMAIL"];
+            $CONTEXT  = $database->select("TEMP", [ "CODE" ], [ "EMAIL" => $RECEIVER ])->fetch_assoc()["CODE"];
+            // CALL
+            $client->sendEmail($TYPE, $RECEIVER, $CONTEXT);
+        }
+        send();
     ?>
 </head>
 <body>

@@ -20,7 +20,9 @@ def main():
     msg['To']      = RECEIVER
 
     if TYPE == "SIGNUP":
-        msg.set_content(f"\nCODE: {CODE}\n\nIf you have not tried to create an account for homeserver you can ignore this E-Mail.")
+        CODE = int(CODE)
+        if CODE > 99999 and CODE < 1000000:
+            msg.set_content(f"\nCODE: {CODE}\n\nIf you have not tried to create an account for homeserver you can ignore this E-Mail.")
 
     elif TYPE == "LOGIN":
         msg.set_content(f"\n2FAUTH: {CODE}")

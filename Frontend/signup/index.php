@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homeserver | Sign up</title>
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
 
     <!-- global css -->
     <link rel="stylesheet" href="../css/style.css">
@@ -23,12 +24,12 @@
         // LISTEN FOR POST_REQUEST
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             // INIT
-            $EMAIL     = $_POST["EMAIL"];
-            $USERNAME  = $_POST["USERNAME"];
-            $PASSWORD  = $_POST["PASSWORD"];
-            $RPASSWORD = $_POST["RPASSWORD"];
-
-            SIGNUP($USERNAME, $EMAIL, $PASSWORD, $RPASSWORD);
+            $EMAIL    = utf8_encode($_POST["EMAIL"]);
+            $USERNAME = utf8_encode($_POST["USERNAME"]);
+            $PASSWORD = utf8_encode($_POST["PASSWORD"]);
+            $REPEATEPASSWORD = utf8_encode($_POST["RPASSWORD"]);
+            // CALL
+            $client->signUp($USERNAME, $EMAIL, $PASSWORD, $REPEATEPASSWORD);
         }
     ?>
 </head>

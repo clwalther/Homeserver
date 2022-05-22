@@ -1,5 +1,5 @@
 <?php
-    // include "error.php";
+    include "error.php";
     include "client.php";
     include "database.php";
     include "env.php";
@@ -21,7 +21,24 @@
             $domain   = $this->DOMAIN;
             $secure   = $this->SECURE;
             $httponly = $this->HTTPONLY;
-    
+
+            setcookie($key,
+                      $value,
+                      $expires,
+                      $path,
+                      $domain,
+                      $secure,
+                      $httponly);
+        }
+
+        function removeCookie($key) {
+            $value    = NULL;
+            $expires  = -1;
+            $path     = $this->PATH;
+            $domain   = $this->DOMAIN;
+            $secure   = $this->SECURE;
+            $httponly = $this->HTTPONLY;
+
             setcookie($key,
                       $value,
                       $expires,
@@ -57,11 +74,15 @@
             }
             return $dec;
         }
+
+        function changeLocation($location, $target) {
+            echo "<script>window.open('".$location."', '".$target."')</script>";
+        }
     }
 
     $utils  = new Utils("/");
     $env    = new Env();
-    $error  = new Error();
+    $error  = new Errors();
     $client = new Client(NULL, NULL, NULL, NULL, NULL);
 
     $SERVERNAME   = $env->getEnv("SERVERNAME");

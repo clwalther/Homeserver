@@ -42,6 +42,10 @@
             $LIKE = [ "EMAIL" => $this->EMAIL ];
             $database->delete("TEMP", $LIKE);
         }
+        function removeGeneratedSVG($NAME) {
+            $command = "rm ../Frontend/assets/DATABASE/USERIMG/".$NAME.".svg";
+            shell_exec($command);
+        }
 
         // singIn()
         function testSucessfulSignIn() {
@@ -130,6 +134,7 @@
             // then
             $this->removeDefaultUser();
             if ($result->num_rows == 0 && $errorCode == 0) {
+                $this->removeGeneratedSVG($client->ID);
                 return 0;
             } else {
                 return 1;
@@ -168,7 +173,7 @@
         function testGenerateImg() {
             // get
             $client = new Client(NULL, Null, NULL, NULL, NULL);
-            $FILENAME = "3";
+            $FILENAME = "Hello_World";
             $CONTEXT  = "Hello World!";
             // when
             $client->generateImg($FILENAME, $CONTEXT);
@@ -185,6 +190,7 @@
             $files = explode('.svg', $files);
             foreach ($files as $fileName) {
                 if (trim($fileName) == $FILENAME) {
+                    $this->removeGeneratedSVG($FILENAME);
                     return TRUE;
                 }
             }

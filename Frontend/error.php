@@ -1,5 +1,5 @@
 <?php
-class Error
+class Errors
 {
     private $ERROR_LOG = "/home/pi/Public/Homeserver/Backend/error.log";
 
@@ -20,34 +20,34 @@ class Error
     // MYSQL
     function mysqlConnection() {
         $this->errorFeedback("mysqlConnectionError", 3);
-        $errorMsg = "Unable to Connect to the Database please conntact an admin immediately.";
-        die($errorMsg);
+        $errorMsg = "ERROR WARNING:  Unable to Connect to the Database please conntact an admin immediately.\n";
+        print($errorMsg);
     }
 
     function mysqlCouldNotChangeDatabase($action) {
         $this->errorFeedback("mysqlCouldNotDelteError", 2);
-        $errorMsg = "Unable to perform action (".$action.") in database.";
+        $errorMsg = "ERROR WARNING:  Unable to perform action (".$action.") in database.\n";
         die($errorMsg);
     }
     // CLIENT
     function clientEmailPasswordIncorrect() {
-        $errorMsg = "Given email and password do not match.";
-        die($errorMsg);
+        $errorMsg = "ERROR WARNING:  Given email and password do not match.\n";
+        print($errorMsg);
     }
 
     function clientEmailAuthIncorrect() {
-        $errorMsg = "Given authorization code is incorrect.";
-        die($errorMsg);
+        $errorMsg = "ERROR WARNING:  Given authorization code is incorrect.\n";
+        print($errorMsg);
     }
 
     function clientEmailAlreadyUsed() {
-        $errorMsg = "Given email alredy recoginzed.";
-        die($errorMsg);
+        $errorMsg = "ERROR WARNING:  Given email alredy recoginzed.\n";
+        print($errorMsg);
     }
 
     function clientPasswordIsNotRepeatedPassword() {
-        $errorMsg = "Given passwords are not equal.";
-        die($errorMsg);
+        $errorMsg = "ERROR WARNING:  Given passwords are not equal.\n";
+        print($errorMsg);
     }
 }
 ?>

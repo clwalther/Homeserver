@@ -8,6 +8,7 @@ class Client
 
     private $TYPE;
     private $PATH_STORE_IMG = "/home/pi/Public/Homeserver/Frontend/assets/DATABASE/USERIMG/";
+    private $PATH_STORE_DB  = "/home/pi/Public/Homeserver/Backend/DATABASE/SHARE/";
 
     function __construct($NAME, $ID, $EMAIL, $AUTH, $TYPE) {
         $this->$NAME  = $NAME;
@@ -18,6 +19,8 @@ class Client
     }
 
     function signIn($EMAIL, $PASSWORD) {
+        echo "test";
+        $utils = $GLOBALS["utils"];
         $error = $GLOBALS["error"];
         $database = $GLOBALS["database"];
         // AUTH
@@ -33,16 +36,18 @@ class Client
             // AUTH SUCCCESS
             while ($answer = $result->fetch_assoc()) {
                 $this->getDataFromQuery($answer);
+                $utils->changeLocation("/", "_self");
                 // REDIRECT
                 return 0; # 0 => no errors;
             }
         } else {
-            // $error->clientEmailPasswordIncorrect();
+            $error->clientEmailPasswordIncorrect();
             return 1; # 1 => clientEmailPasswordIncorrect;
         }
     }
 
     function signUp($USERNAME, $EMAIL, $PASSWORD, $REPEATEPASSWORD) {
+        $utils = $GLOBALS["utils"];
         $error = $GLOBALS["error"];
         $database = $GLOBALS["database"];
         
@@ -59,31 +64,45 @@ class Client
             $result = $database->select("USERS", ["*"], $LIKE);
             if ($result->num_rows == 0) {
                 // EMAIL NOT ALREADY USED
-                $code = $this->generateCode();
+                $CODE = $this->generateCode();
+                $AUTH = 0;
                 // INSERT
                 $ARRAY = [
-                    "CODE"     => $code,
+                    "CODE"     => $CODE,
                     "USERNAME" => $USERNAME,
                     "EMAIL"    => $EMAIL,
                     "PASSWORD" => $PASSWORD,
-                    "AUTH"     => 0
+                    "AUTH"     => $AUTH
                 ];
                 $database->insert("TEMP", $ARRAY);
                 // REDIRECT
+                // setcookie("test", "test", time() + (86400 * 30), "/");
+                $utils->setCookie("EMAIL", $EMAIL);
+                $utils->changeLocation("./auth", "_self");
                 return 0; # 0 => no errors;
             } else {
                 // EMAIL ALREADY USED
-                // $error->clientEmailAlreadyUsed();
+                $error->clientEmailAlreadyUsed();
                 return 2; # 2 => clientEmailAlreadyUsed;
             }
         } else {
             // PASSWORD AND REPEATED PASSWORD ARE NOT EQUAL
-            // $error->clientPasswordIsNotRepeatedPassword();
+            $error->clientPasswordIsNotRepeatedPassword();
             return 1; # 1 => clientPasswordIsNotRepeatedPassword;
         }
     }
     
+    function signOut() {
+        $utils = $GLOBALS["utils"];
+
+        $utils->removeCookie("AUTH");
+        $utils->removeCookie("EMAIL");
+        $utils->removeCookie("USERID");
+        $utils->removeCookie("USERNAME");
+    }
+
     function authEmailToAccount($CODE) {
+        $utils = $GLOBALS["utils"];
         $error = $GLOBALS["error"];
         $database = $GLOBALS["database"];
         
@@ -105,13 +124,16 @@ class Client
                 $result = $database->select("USERS", ["*"], $ARRAY);
                 while ($answer = $result->fetch_assoc()) {
                     $this->getDataFromQuery($answer);
+                    $this->generateImg($this->ID, $this->NAME);
+                    $this->generateDB($this->ID);
                     // REDIRECT
-                    return 0; # 0 => success;
+                    $utils->changeLocation("/", "_self");
+                    return 0; # 0 => no errors;
                 }
                 
             }
         } else {
-            // $error->clientEmailAuthIncorrect();
+            $error->clientEmailAuthIncorrect();
             return 1; # 1 => clientEmailAuthIncorrect;
         }
     }
@@ -190,6 +212,12 @@ class Client
         }
         $data .= '</svg>';
         return $data;
+    }
+
+    function generateDB($FILENAME) {
+        $file = fopen($this->PATH_STORE_DB.$FILENAME.".db", "w") or die($this->PATH_STORE_DB.$FILENAME.".db");
+        fwrite($file, "");
+        fclose($file);
     }
 }
 ?>

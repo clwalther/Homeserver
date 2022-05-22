@@ -60,7 +60,7 @@
         }
 
         function report($CLASS) {
-            $REPORT  = ">>> UNIT TEST REPORT FOR ".get_class($CLASS)."<<<\n\n";
+            $REPORT  = ">>> UNIT TEST REPORT FOR ".get_class($CLASS)." <<<\n\n";
 
             $REPORT .= "    METHODS FATAL:   ".$this->fatal.",\n";
             $REPORT .= "    METHODS FAILED:  ".$this->failed.",\n";
