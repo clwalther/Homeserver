@@ -16,7 +16,7 @@
         }
 
         function setCookie($key, $value) {
-            $expires  = $this->getExpireDate();
+            $expires  = 0; // <------ DEBUG
             $path     = $this->PATH;
             $domain   = $this->DOMAIN;
             $secure   = $this->SECURE;
@@ -76,9 +76,11 @@
         }
 
         function changeLocation($location, $target) {
-            echo "<script>window.open('".$location."', '".$target."')</script>";
+            echo "<script>window.open('".$location."', '".$target."')</script>\n";
         }
     }
+
+    $PATH = __DIR__."/../";
 
     $utils  = new Utils("/");
     $env    = new Env();

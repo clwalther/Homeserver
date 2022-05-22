@@ -1,9 +1,11 @@
 <?php
 class Errors
 {
-    private $ERROR_LOG = "/home/pi/Public/Homeserver/Backend/error.log";
+    private $ERROR_LOG;
 
-    function __construct() {}
+    function __construct() {
+        $this->ERROR_LOG = $GLOBALS["ROOT_PATH"]."/../Backend/error.log";
+    }
     /*
         SEVERITY LEVELS:
             1) low    [only effects a few users];
@@ -27,7 +29,7 @@ class Errors
     function mysqlCouldNotChangeDatabase($action) {
         $this->errorFeedback("mysqlCouldNotDelteError", 2);
         $errorMsg = "ERROR WARNING:  Unable to perform action (".$action.") in database.\n";
-        die($errorMsg);
+        print($errorMsg);
     }
     // CLIENT
     function clientEmailPasswordIncorrect() {

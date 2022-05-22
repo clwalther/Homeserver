@@ -7,8 +7,8 @@ class Client
     public $AUTH;
 
     private $TYPE;
-    private $PATH_STORE_IMG = "/home/pi/Public/Homeserver/Frontend/assets/DATABASE/USERIMG/";
-    private $PATH_STORE_DB  = "/home/pi/Public/Homeserver/Backend/DATABASE/SHARE/";
+    private $PATH_STORE_IMG;
+    private $PATH_STORE_DB;
 
     function __construct($NAME, $ID, $EMAIL, $AUTH, $TYPE) {
         $this->$NAME  = $NAME;
@@ -16,10 +16,12 @@ class Client
         $this->$EMAIL = $EMAIL;
         $this->AUTH   = $AUTH;
         $this->TYPE   = $TYPE;
+
+        $this->PATH_STORE_IMG = $GLOBALS["PATH"]."Frontend/assets/DATABASE/USERIMG/";
+        $this->PATH_STORE_DB  = $GLOBALS["PATH"]."Backend/DATABASE/SHARE/";
     }
 
     function signIn($EMAIL, $PASSWORD) {
-        echo "test";
         $utils = $GLOBALS["utils"];
         $error = $GLOBALS["error"];
         $database = $GLOBALS["database"];
@@ -76,7 +78,6 @@ class Client
                 ];
                 $database->insert("TEMP", $ARRAY);
                 // REDIRECT
-                // setcookie("test", "test", time() + (86400 * 30), "/");
                 $utils->setCookie("EMAIL", $EMAIL);
                 $utils->changeLocation("./auth", "_self");
                 return 0; # 0 => no errors;
@@ -139,7 +140,7 @@ class Client
     }
     
     function sendEmail($TYPE, $RECEIVER, $CONTEXT) {
-        $command = "/bin/python /home/pi/Public/Homeserver/App/Auth.py ".$TYPE." ".$RECEIVER." ".$CONTEXT;
+        $command = "/bin/python ".$GLOBALS["PATH"]."App/Auth.py ".$TYPE." ".$RECEIVER." ".$CONTEXT;
         shell_exec($command);
     }
     
@@ -215,7 +216,7 @@ class Client
     }
 
     function generateDB($FILENAME) {
-        $file = fopen($this->PATH_STORE_DB.$FILENAME.".db", "w") or die($this->PATH_STORE_DB.$FILENAME.".db");
+        $file = fopen($this->PATH_STORE_DB.$FILENAME.".db", "w");
         fwrite($file, "");
         fclose($file);
     }

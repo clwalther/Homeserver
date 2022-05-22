@@ -1,7 +1,11 @@
 <?php
 class Env
 {
-    private $ENV_PATH = "/home/pi/Public/Homeserver/env";
+    private $ENV_PATH;
+
+    function __construct() {
+        $this->ENV_PATH = $GLOBALS["PATH"]."env";
+    }
 
     function getEnv($key) {
         $read = file($this->ENV_PATH);
