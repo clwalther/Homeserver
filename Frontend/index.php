@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homeserver</title>
+    <link rel="shortcut icon" href="./assets/icons/favicon.ico" type="image/x-icon">
 
     <!-- global css -->
     <link rel="stylesheet" href="./css/style.css">
@@ -53,7 +54,7 @@
                     <button onclick="window.open('/status',  '_self')">Set Status</button>
                     <button onclick="window.open('/profile', '_self')">Your Profile</button>
                     <button onclick="window.open('/premium', '_self')">Upgrade now</button>
-                    <button onclick="window.open('/signuot', '_self')">Sign out</button>
+                    <button onclick="window.open('/signout', '_self')">Sign out</button>
                 </div>
             </div>
         </nav>

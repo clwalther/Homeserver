@@ -6,7 +6,7 @@ class ENV:
         self.EMAIL    = self.getValue("EMAIL")
 
     def read(self):
-        with open('/home/pi/Public/Homeserver/env', 'r') as f:
+        with open('/home/pi/Development/Homeserver/env', 'r') as f:
             DATA = f.read()
         return DATA
 
