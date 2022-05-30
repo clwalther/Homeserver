@@ -63,7 +63,7 @@ body {
         display: flex;
         align-content: center;
 
-        background-color: var(--black);
+        background-color: var(--accent);
     }
         header a {
             padding-right: 16px;
@@ -181,6 +181,7 @@ body {
 
             display: flex;
             align-items: center;
+            justify-content: flex-end;
         }
             header nav a {
                 margin-left:  var(--BdHdNvA-mrgn-vrtcl);
@@ -265,5 +266,28 @@ body {
                         outline: 1px solid var(--darkgrey);
                     }
     /* section */
+    section {
+        position: absolute;
+        top: calc(var(--BdHd-hght) + var(--BdHd-pddng-vrtcl) * 2);
+        left: 0px;
+    }
+        section aside {
+            position: relative;
+            top: 150px;
+            left: 200px;
+        }
+            section aside h1 {
+                font-size: 72px;
+                font-weight: 700;
 
+                color: var(--white);
+
+                margin-bottom: 0;
+            }
+            section aside p {
+                max-width: 550px;
+                font-size: 20px;
+                line-height: 1.3;
+                letter-spacing: 0.016em;
+            }
     /* footer */

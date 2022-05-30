@@ -29,11 +29,12 @@
         }
 
         function send() {
+            $utils    = $GLOBALS["utils"];
             $client   = $GLOBALS["client"];
             $database = $GLOBALS["database"];
             // INIT
             $TYPE     = "SIGNUP";
-            $RECEIVER = $_COOKIE["EMAIL"];
+            $RECEIVER = $utils->getCookie("EMAIL");
             $CONTEXT  = $database->select("TEMP", [ "CODE" ], [ "EMAIL" => $RECEIVER ])->fetch_assoc()["CODE"];
             // CALL
             $client->sendEmail($TYPE, $RECEIVER, $CONTEXT);
@@ -42,9 +43,6 @@
     ?>
 </head>
 <body>
-    <header>
-        <a href="/signup"><- Back</a>
-    </header>
     <section>
         <img src="../../assets/svg/hub24dp.svg">
         <h1>Autheticate your E-Mail Account</h1>

@@ -31,6 +31,10 @@
                       $httponly);
         }
 
+        function getCookie($key) {
+            return $_COOKIE[$key];
+        }
+
         function removeCookie($key) {
             $value    = NULL;
             $expires  = -1;
@@ -85,7 +89,14 @@
     $utils  = new Utils("/");
     $env    = new Env();
     $error  = new Errors();
-    $client = new Client(NULL, NULL, NULL, NULL, NULL);
+
+    $NAME  = $utils->getCookie("USERNAME");
+    $ID    = $utils->getCookie("USERID");
+    $EMAIL = $utils->getCookie("EMAIL");
+    $AUTH  = $utils->getCookie("AUTH");
+    $TYPE  = $utils->getCookie("TYPE");
+
+    $client = new Client($NAME, $ID, $EMAIL, $AUTH, $TYPE);
 
     $SERVERNAME   = $env->getEnv("SERVERNAME");
     $USERLOGIN    = $env->getEnv("USERLOGIN");

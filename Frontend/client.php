@@ -11,9 +11,9 @@ class Client
     private $PATH_STORE_DB;
 
     function __construct($NAME, $ID, $EMAIL, $AUTH, $TYPE) {
-        $this->$NAME  = $NAME;
-        $this->$ID    = $ID;
-        $this->$EMAIL = $EMAIL;
+        $this->NAME   = $NAME;
+        $this->ID     = $ID;
+        $this->EMAIL  = $EMAIL;
         $this->AUTH   = $AUTH;
         $this->TYPE   = $TYPE;
 
@@ -151,11 +151,13 @@ class Client
         $this->ID    = $answer["USERID"];
         $this->EMAIL = $answer["EMAIL"];
         $this->AUTH  = $answer["AUTH"];
+        $this->TYPE  = $answer["TYPE"];
         // COOKIES
         $utils->setCookie("USERNAME", $this->NAME);
         $utils->setCookie("USERID", $this->ID);
         $utils->setCookie("EMAIL", $this->EMAIL);
         $utils->setCookie("AUTH", $this->AUTH);
+        $utils->setCookie("TYPE", $this->TYPE);
     }
 
     function generateCode() {
@@ -219,6 +221,14 @@ class Client
         $file = fopen($this->PATH_STORE_DB.$FILENAME.".db", "w");
         fwrite($file, "");
         fclose($file);
+    }
+
+    function isLogedIn() {
+        if ($this->NAME != NULL and $this->ID != NULL and $this->EMAIL != NULL and $this->AUTH != NULL) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 }
 ?>
