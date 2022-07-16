@@ -5,27 +5,30 @@ class Client
     public $ID;
     public $EMAIL;
     public $AUTH;
+    public $TYPE;
 
-    private $TYPE;
+    private $PATH;
     private $PATH_STORE_IMG;
-    private $PATH_STORE_DB;
+    private $PATH_STORE_IDB;
 
     function __construct($NAME, $ID, $EMAIL, $AUTH, $TYPE) {
-        $this->NAME   = $NAME;
-        $this->ID     = $ID;
-        $this->EMAIL  = $EMAIL;
-        $this->AUTH   = $AUTH;
-        $this->TYPE   = $TYPE;
+        # VALS
+        $this->NAME  = $NAME;
+        $this->ID    = $ID;
+        $this->EMAIL = $EMAIL;
+        $this->AUTH  = $AUTH;
+        $this->TYPE  = $TYPE;
 
-        $this->PATH_STORE_IMG = $GLOBALS["PATH"]."Frontend/assets/DATABASE/USERIMG/";
-        $this->PATH_STORE_DB  = $GLOBALS["PATH"]."Backend/DATABASE/SHARE/";
+        # CONSTS
+        $this->PATH = $GLOBALS["PATH"];
+        $this->PATH_STORE_IMG = $this->PATH."Frontend/assets/DATABASE/USERIMG/";
+        $this->PATH_STORE_DB  = $this->PATH."Backend/DATABASE/SHARE/";
     }
 
+    # SIGN IN
     function signIn($EMAIL, $PASSWORD) {
-        $utils = $GLOBALS["utils"];
-        $error = $GLOBALS["error"];
         $database = $GLOBALS["database"];
-        // AUTH
+        
         $TABLE   = "USERS";
         $COLUMNS = ["*"];
         $LIKE    = [
@@ -33,66 +36,139 @@ class Client
             "PASSWORD" => $PASSWORD
         ];
 
-        $result = $database->select($TABLE, $COLUMNS, $LIKE);
-        if ($result->num_rows == 1) {
-            // AUTH SUCCCESS
-            while ($answer = $result->fetch_assoc()) {
+        $queryAns = $database->select($TABLE, $COLUMNS, $LIKE);
+        $feedback = $this->signInQueryAnswerHanler($queryAns);
+        return $feedback;
+    }
+    function signInQueryAnswerHanler($queryAns) {
+        $error = $GLOBALS["error"];
+        $utils = $GLOBALS["utils"];
+        
+        if ($queryAns->num_rows == 1) {
+            // AUTH SUCCESS
+            while ($answer = $queryAns->fetch_assoc()) {
                 $this->getDataFromQuery($answer);
                 $utils->changeLocation("/", "_self");
-                // REDIRECT
-                return 0; # 0 => no errors;
+                return 0;
             }
         } else {
+            // INVALID ANSWER
             $error->clientEmailPasswordIncorrect();
-            return 1; # 1 => clientEmailPasswordIncorrect;
+            return 1;
         }
     }
 
+    # SIGN UP
     function signUp($USERNAME, $EMAIL, $PASSWORD, $REPEATEPASSWORD) {
-        $utils = $GLOBALS["utils"];
-        $error = $GLOBALS["error"];
         $database = $GLOBALS["database"];
-        
-        if ($PASSWORD == $REPEATEPASSWORD) {  
-            // PASSWORD IS GIVEN TWICE   
-            $LIKE   = [ "EMAIL" => $EMAIL ];
-            $result = $database->select("TEMP", ["*"], $LIKE);
-            if ($result->num_rows > 0) {
-                // EMAIL ALREADY TRYING TO LOGIN
-                $database->delete("TEMP", $LIKE);
-            }
+        $error    = $GLOBALS["error"];
+        $utils    = $GLOBALS["utils"];
 
-            $LIKE   = [ "EMAIL" => $EMAIL ];
-            $result = $database->select("USERS", ["*"], $LIKE);
-            if ($result->num_rows == 0) {
-                // EMAIL NOT ALREADY USED
-                $CODE = $this->generateCode();
-                $AUTH = 0;
-                // INSERT
-                $ARRAY = [
-                    "CODE"     => $CODE,
-                    "USERNAME" => $USERNAME,
-                    "EMAIL"    => $EMAIL,
-                    "PASSWORD" => $PASSWORD,
-                    "AUTH"     => $AUTH
+        if ($PASSWORD == $REPEATEPASSWORD) {  
+            // PASSWORD IS GIVEN TWICE
+            $TABLE   = "TEMP";
+            $COLUMNS = ["*"];
+            $LIKE    = [
+                "EMAIL" => $EMAIL
+            ];
+
+            $queryAns = $database->select($TABLE, $COLUMNS, $LIKE);
+            $feedback = $this->signUpQueryAnswerHandler($queryAns);
+
+            $CODE  = $this->generateAuthCode();
+            $AUTH  = 0;
+            $ARRAY = [
+                "CODE"     => $CODE,
+                "USERNAME" => $USERNAME,
+                "EMAIL"    => $EMAIL,
+                "PASSWORD" => $PASSWORD,
+                "AUTH"     => $AUTH
+            ];
+
+            $database->insert("TEMP", $ARRAY);
+            $utils->setCookie("EMAIL", $EMAIL);
+            $utils->changeLocation("./auth", "_self");
+            return 0;
+        } else {
+            // PASSWORD AND REPEATED PASSWORD ARE NOT THE SAME
+            $error->clientPasswordIsNotRepeatedPassword();
+            return 1;
+        }
+    }
+    function signUpQueryAnswerHanler($queryAns) {
+        $database = $GLOBALS["database"];
+
+        if ($queryAns->num_rows == 1) {
+            // EMAIL ALREADY TRYING TO LOGIN
+            $database->delete("TEMP", $LIKE);
+        }
+    }
+    function generateCode() {
+        $database = $GLOBALS["database"];
+
+        $code = NULL;
+
+        $TABLE   = "TEMP";
+        $COLUMNS = ["*"];
+        $LIKE    = [
+            "CODE" => $code
+        ];
+
+        while ($code == NULL or $database->select("TEMP", ["*"], $LIKE)->num_rows > 0) {
+            $code = rand(100000, 999999);
+            $LIKE = [
+                "CODE" => $code
+            ];
+        }
+        return $code;
+    }
+
+    # SIGN UP EMAIL AUTH
+    function signUpEmailAuth($CODE) {
+        $database = $GLOBALS["database"];
+        $error    = $GLOBALS["error"];
+        $utils    = $GLOBALS["utils"];
+
+        $TABLE   = "TEMP";
+        $COLUMNS = ["*"];
+        $LIKE    = [
+            "CODE" => $CODE
+        ];
+
+        $queryAns = $database->select($TABLE, $COLUMNS, $LIKE);
+        
+        if ($queryAns->num_rows == 1) {
+            // EAMIL AUTHORIZED
+            while ($answer = $queryAns->fetch_assoc()) {
+                $TABLE   = "USERS";
+                $COLUMNS = ["*"];
+                $ARRAY    = [
+                    "USERNAME" => $answer["USERNAME"],
+                    "EMAIL"    => $answer["EMAIL"],
+                    "TYPE"     => "USER",
+                    "PASSWORD" => $answer["PASSWORD"],
+                    "AUTH"     => intval($answer["AUTH"])
                 ];
-                $database->insert("TEMP", $ARRAY);
-                // REDIRECT
-                $utils->setCookie("EMAIL", $EMAIL);
-                $utils->changeLocation("./auth", "_self");
-                return 0; # 0 => no errors;
-            } else {
-                // EMAIL ALREADY USED
-                $error->clientEmailAlreadyUsed();
-                return 2; # 2 => clientEmailAlreadyUsed;
+
+                $database->insert($TABLE, $ARRAY);
+                $database->delete("TEMP", $LIKE);
+                $queryAns = $database->select($TABLE, $COLUMNS, $ARRAY);
+
+                while ($answer = $queryAns->fetch_assoc()) {
+                    $this->getDataFromQuery($answer);
+                    $this->generateImg();
+                    $this->generateDB();
+                    $utils->changeLocation("/", "_self");
+                    return 0;
+                }
             }
         } else {
-            // PASSWORD AND REPEATED PASSWORD ARE NOT EQUAL
-            $error->clientPasswordIsNotRepeatedPassword();
-            return 1; # 1 => clientPasswordIsNotRepeatedPassword;
+            $error->clientEmailAuthIncorrect();
+            return 1;
         }
     }
-    
+
+    # SIGN OUT
     function signOut() {
         $utils = $GLOBALS["utils"];
 
@@ -101,52 +177,18 @@ class Client
         $utils->removeCookie("USERID");
         $utils->removeCookie("USERNAME");
     }
-
-    function authEmailToAccount($CODE) {
-        $utils = $GLOBALS["utils"];
-        $error = $GLOBALS["error"];
-        $database = $GLOBALS["database"];
-        
-        $LIKE = [ "CODE" => $CODE ];
-        $result = $database->select("TEMP", ["*"], $LIKE);
-        if ($result->num_rows == 1) {
-            // EAMIL AUTHORIZED
-            while ($answer = $result->fetch_assoc()) {
-                $ARRAY = [
-                    "USERNAME" => $answer["USERNAME"],
-                    "EMAIL"    => $answer["EMAIL"],
-                    "TYPE"     => "USER",
-                    "PASSWORD" => $answer["PASSWORD"],
-                    "AUTH"     => intval($answer["AUTH"])
-                ];
-                $database->insert("USERS", $ARRAY);
-                $database->delete("TEMP", $LIKE);
-                
-                $result = $database->select("USERS", ["*"], $ARRAY);
-                while ($answer = $result->fetch_assoc()) {
-                    $this->getDataFromQuery($answer);
-                    $this->generateImg($this->ID, $this->NAME);
-                    $this->generateDB($this->ID);
-                    // REDIRECT
-                    $utils->changeLocation("/", "_self");
-                    return 0; # 0 => no errors;
-                }
-                
-            }
-        } else {
-            $error->clientEmailAuthIncorrect();
-            return 1; # 1 => clientEmailAuthIncorrect;
-        }
-    }
     
+
+
     function sendEmail($TYPE, $RECEIVER, $CONTEXT) {
-        $command = "/bin/python ".$GLOBALS["PATH"]."App/Auth.py ".$TYPE." ".$RECEIVER." ".$CONTEXT;
+        $command = "/bin/python ".$this->PATH."App/Auth.py ".$TYPE." ".$RECEIVER." ".$CONTEXT;
         shell_exec($command);
     }
     
+    # DATA INIT
     function getDataFromQuery($answer) {
-        $utils = $GLOBALS["utils"];
-        // GET
+        $utils = $GLOBALS["utils"];   
+        // GLOBALS
         $this->NAME  = $answer["USERNAME"];
         $this->ID    = $answer["USERID"];
         $this->EMAIL = $answer["EMAIL"];
@@ -154,27 +196,14 @@ class Client
         $this->TYPE  = $answer["TYPE"];
         // COOKIES
         $utils->setCookie("USERNAME", $this->NAME);
-        $utils->setCookie("USERID", $this->ID);
-        $utils->setCookie("EMAIL", $this->EMAIL);
-        $utils->setCookie("AUTH", $this->AUTH);
-        $utils->setCookie("TYPE", $this->TYPE);
+        $utils->setCookie("USERID",   $this->ID);
+        $utils->setCookie("EMAIL",    $this->EMAIL);
+        $utils->setCookie("AUTH",     $this->AUTH);
+        $utils->setCookie("TYPE",     $this->TYPE);
     }
 
-    function generateCode() {
-        $database = $GLOBALS["database"];
-        $code = NULL;
-        $LIKE = [ "CODE" => $code ];
-
-        while ($database->select("TEMP", ["*"], $LIKE)->num_rows > 0 or $code == NULL) {
-            $code = rand(100000, 999999);
-            $LIKE = [ "CODE" => $code ];
-        }
-        return $code;
-    }
 
     function generateImg($FILENAME, $CONTEXT) {
-        $utils = $GLOBALS["utils"];
-        
         $WIDTH  = 4;
         $HEIGHT = 4;
         $SIZE   = 10;
@@ -223,8 +252,16 @@ class Client
         fclose($file);
     }
 
+    # IS PROPERTY...
     function isLogedIn() {
         if ($this->NAME != NULL and $this->ID != NULL and $this->EMAIL != NULL and $this->AUTH != NULL) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    function isAdmin() {
+        if ($this->isLogedIn() and $this->TYPE == "ADMIN") {
             return TRUE;
         } else {
             return FALSE;

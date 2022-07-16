@@ -7,40 +7,43 @@
     <title>Homeserver</title>
 
     <!-- global css -->
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/color.css">
-    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/color.css">
+    <link rel="stylesheet" href="./assets/css/font.css">
 
     <!-- gloabl javascript -->
-    <script src="./javascript/utils.js" async></script>
-    <script src="./javascript/script.js" async></script>
+    <script src="./assets/javascript/utils.js" async></script>
+    <script src="./assets/javascript/script.js" async></script>
 
     <?php include './global.php'; ?>
 </head>
 <body>
-    <?php include './templates/header.php'; ?>
-    <?php if($client->isLogedIn()) { ?>
+    <?php 
+        include './templates/header.php';
+    
+        if($client->isLogedIn()) {
+    ?>
+        <!-- logged in -->
         <section>
-            <!-- logged in -->
         </section>
     <?php } else { ?>
+        <!-- logged out -->
         <section>
-            <aside>
-                <h1>
+            <article id="home">
+                <h1 class="segoe-UI">
                     The virtual
                     <br>
                     living room
                 </h1>
                 <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis excepturi, nobis consequatur a numquam corporis maxime omnis quasi blanditiis ex, quae doloremque sapiente! Laudantium, repellat officiis! Dolorum consequatur officia voluptate.
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis dolore unde soluta facere, consequuntur sapiente officiis odio velit nostrum accusantium ratione laudantium doloribus
                 </p>
-            </aside>
-            <aside>
-                <!-- calander -->
-            </aside>
+            </article>
         </section>
-    <?php } ?>
-    <footer>
-    </footer>
+    <?php 
+        }
+        
+        include './templates/footer.php';
+    ?>
 </body>
 </html>

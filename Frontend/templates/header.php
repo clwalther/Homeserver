@@ -7,20 +7,36 @@
             <form action="" method="">
                 <input type="text" name="SEARCH" id="SEARCH_BAR"
                     placeholder="Search or jump to...">
-                <div>
+                <div id="header-propositions">
                     <input type="submit" value="Lorem ipsum.txt">
                     <input type="submit" value="Lorem ipsum.docx">
                 </div>
             </form>
         </label>
         <nav>
-            <a href="/share">Share</a>
-            <a href="/printer">Printer</a>
-            <a href="/lorem">Lorem</a>
+            <?php if($client->isLogedIn()) {?>
+                <!-- logged in -->
+                <a href="/share">Share</a>
+                <a href="/calender">Calender</a>
+                <a href="/notes">Notes</a>
+            <?php
+                    $server->visulizeExtensions();
+                } else {
+            ?>
+                <!-- logged out -->
+                <a href="/explor">Explor</a>
+                <a href="/automate">Automate</a>
+                <a href="/security">Security</a>
+                <a href="/community">Community</a>
+            <?php } if($client->isAdmin()) {?>
+                <!-- type: admin -->
+                <a href="/admin">Admin</a>
+            <?php } ?>
         </nav>
     </div>
     <nav>
         <?php if($client->isLogedIn()) { ?>
+            <!-- logged in -->
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7 10l5 5 5-5H7z"/></svg>
@@ -34,13 +50,14 @@
                 <div>
                     <button onclick="window.open('/status',  '_self')">Set Status</button>
                     <button onclick="window.open('/profile', '_self')">Your Profile</button>
-                    <button onclick="window.open('/premium', '_self')">Upgrade now</button>
-                    <button onclick="window.open('/signout', '_self')">Sign out</button>
+                    <button onclick="window.open('/upgrade', '_self')">Upgrade now</button>
+                    <button onclick="window.open('/utils/signout', '_self')">Sign out</button>
                 </div>
             </div>
         <?php } else { ?>
-            <a href="/signin">Sign in</a>
-            <a href="/signup">Sign up</a>
+            <!-- logged out -->
+            <a href="/utils/signin">Sign in</a>
+            <a href="/utils/signup">Sign up</a>
         <?php } ?>
     </nav>
 </header>

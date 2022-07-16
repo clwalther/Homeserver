@@ -1,0 +1,26 @@
+.media-0 { /* mobile */
+    display: none;
+}
+.media-1 { /* tablet */
+    display: none;
+}
+.media-2 { /* desktop */
+    display: none;
+}
+
+@media only screen and (max-width: 475px) {
+    .media-0 {
+        display: revert;
+    }
+}
+
+@media only screen and (min-width: 475px) and (max-width: 900px) {
+    .media-1 {
+        display: revert;
+    }
+}
+@media only screen and (min-width: 1000px) {
+    .media-2 {
+        display: revert;
+    }
+}

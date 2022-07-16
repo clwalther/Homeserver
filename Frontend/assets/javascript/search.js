@@ -1,0 +1,5 @@
+class Search {
+    constructor() {
+
+    }
+}

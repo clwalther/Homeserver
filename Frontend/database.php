@@ -14,6 +14,10 @@ class Database
         $this->USERPASSWORD = $USERPASSWORD;
     }
 
+    function helloworld() {
+        return "test";
+    }
+
     function connect() {
         for ($tries = 0; $tries < 3; $tries++) {
             $this->CONNECTION = new mysqli($this->SERVERNAME, $this->USERLOGIN, $this->USERPASSWORD, $this->DATABASENAME);
