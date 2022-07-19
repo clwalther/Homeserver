@@ -8,18 +8,18 @@
     display: none;
 }
 
-@media only screen and (max-width: 475px) {
+@media only screen and (max-width: 841px) {
     .media-0 {
         display: revert;
     }
 }
 
-@media only screen and (min-width: 475px) and (max-width: 900px) {
+@media only screen and (min-width: 841px) and (max-width: 1010px) {
     .media-1 {
         display: revert;
     }
 }
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 1010px) {
     .media-2 {
         display: revert;
     }

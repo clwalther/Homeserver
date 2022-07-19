@@ -10,12 +10,14 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/color.css">
     <link rel="stylesheet" href="../../assets/css/font.css">
+
+    <!-- gloabl javascript -->
+    <script src="../../assets/javascript/utils.js" async></script>
+    <script src="../../assets/javascript/client.js" async></script>
+    <script src="../../assets/javascript/search.js" async></script>
+    <script src="../../assets/javascript/script.js" async></script>
     <!-- specific css -->
     <link rel="stylesheet" href="../../assets/css/login.css">
-
-    <!-- global js -->
-    <script src="../../assets/javascript/utils.js"></script>
-    <script src="../../assets/javascript/script.js"></script>
 
     <?php
         include '../../global.php';

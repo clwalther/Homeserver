@@ -1,5 +1,6 @@
 let client = new Client();
-let error  = new Error();
 let search = new Search();
+let utils  = new Utils();
 
-client.setFavicon()
+
+utils.setFavicon()

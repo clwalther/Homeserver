@@ -1,39 +1,30 @@
 :root {
     --Sctn-width: 400px;
     --Sctn-height:  80%;
+    --SctnImg-mrgn-tp: 50px;
+    --SctnInpt-left: 10%;
+    --SctnInpt-height: 30px;
+    --SctnInpt-padding-left: 5px;
+    --SctnInpt-border-width: 1px;
+    --SctnInpt-border-corr:  0.8;
+    --SctnImg-size: 70px;
 }
 
-header a {
-    font-family: 'Roboto Mono', monospace;
-    text-decoration: none;
-    color: var(--grey);
-}
-header a:hover {
-    text-decoration: underline;
-}
 section {
     position: absolute;
-    top: 5%;
-
-    margin-left: calc(50% - var(--Sctn-width) / 2);
+    top:  calc(50% - var(--Sctn-height) / 2);
+    left: calc(50% - var(--Sctn-width)  / 2);
 
     width:  var(--Sctn-width);
     height: var(--Sctn-height);
 
-    padding-top: 5%;
-
+    margin: 0;
+    
     border: 1px solid var(--darkgrey);
     border-radius: 8px;
 }
-    :root {
-        --SctnInpt-left: 10%;
-        --SctnInpt-height: 30px;
-        --SctnInpt-padding-left: 5px;
-        --SctnInpt-border-width: 1px;
-        --SctnInpt-border-corr:  0.8;
-        --SctnImg-size: 70px;
-    }
     section img {
+        margin-top:  var(--SctnImg-mrgn-tp);
         margin-left: calc(50% - var(--SctnImg-size) / 2);
         height: var(--SctnImg-size);
         width:  var(--SctnImg-size);

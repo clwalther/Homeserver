@@ -10,12 +10,10 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/color.css">
     <link rel="stylesheet" href="../../assets/css/font.css">
+    <!-- specific css -->
+    <link rel="stylesheet" href="../../assets/css/login.css">
     
-    <!-- global javascript -->
-    <script src="../../assets/javascript/utils.js"></script>
-    <script src="../../assets/javascript/script.js"></script>
-
-    <?php
+    <?php 
         include '../../global.php';
 
         $client->signOut();

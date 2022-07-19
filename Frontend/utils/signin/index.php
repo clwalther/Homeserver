@@ -10,12 +10,15 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/color.css">
     <link rel="stylesheet" href="../../assets/css/font.css">
+
+    <!-- gloabl javascript -->
+    <script src="../../assets/javascript/utils.js" async></script>
+    <script src="../../assets/javascript/client.js" async></script>
+    <script src="../../assets/javascript/search.js" async></script>
+    <script src="../../assets/javascript/script.js" async></script>
     <!-- specific css -->
     <link rel="stylesheet" href="../../assets/css/login.css">
 
-    <!-- global javascript -->
-    <script src="../../assets/javascript/utils.js"></script>
-    <script src="../../assets/javascript/script.js"></script>
 
     <?php
         include '../../global.php';
@@ -39,9 +42,9 @@
             <input class="bg-black lightgrey" name="PASSWORD" type="password" placeholder="Password">
             <input class="submit bg-positive white" type="submit" value="Login in">
         </form>
-        <a href="/recover">Forgot Password?</a>
+        <a href="/utils/recover">Forgot Password?</a>
         <div>
-            <p>New to Homeserver? <a href="/signup">Create an Account.</a></p>
+            <p>New to Homeserver? <a href="/utils/signup">Create an Account.</a></p>
         </div>
     </section>
 </body>

@@ -17,17 +17,17 @@ class Server
 
     function getExtensionName($extension) {
         $capital = strtoupper(substr($extension, 0, 1));
-        $body    = substr($extension, 1, strlen($extension));
+        $body = substr($extension, 1, strlen($extension));
         return $capital.$body;
     }
 
-    function visulizeExtensions() {
+    function getHTMLExtension() {
         $string = "";
         foreach($this->EXTENSIONS as $extension) {
             $extensionName = $this->getExtensionName($extension);
             $string .= "<a href='/extensions/".$extension."'>".$extensionName."</a>";
         }
-        echo $string;
+        return $string;
     }
 }
 ?>

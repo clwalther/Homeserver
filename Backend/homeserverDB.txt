@@ -32,17 +32,24 @@
 ;   |   |
 ;   |   +---AUTH     [BIT(1), NOT NULL]
 ;   |
-;   +---TEMP
+;   +---SIGN_UP
+;   |   |
+;   |   +---CODE     [INT(6),       NOT NULL]
+;   |   |
+;   |   +---USRNAME  [VARCHAR(30),  NOT NULL]
+;   |   |
+;   |   +---EAMIL    [VARCHAR(40),  NOT NULL]
+;   |   |
+;   |   +---PASSWORD [VARCHAR(255), NOT NULL]
+;   |   |
+;   |   +---AUTH     [BIT(1),       NOT NULL]
+;   |
+;   +---RECOVER
 ;       |
-;       +---CODE     [INT(6),       NOT NULL]
+;       +---CODE      [INT(6),      NOT NULL]
 ;       |
-;       +---USRNAME  [VARCHAR(30),  NOT NULL]
-;       |
-;       +---EAMIL    [VARCHAR(40),  NOT NULL]
-;       |
-;       +---PASSWORD [VARCHAR(255), NOT NULL]
-;       |
-;       +---AUTH     [BIT(1),       NOT NULL]
+;       +---EMAIL     [VARCHAR(40), NOT NULL]
+;
 ;
 ;   **MYSQL**
 ;
@@ -50,8 +57,6 @@
 ;
 ;   --> CREATE TABLE USERS (USERID INT AUTO_INCREMENT NOT NULL PRIMARY KEY, USERNAME VARCHAR(30) NOT NULL, EMAIL VARCHAR(40) NOT NULL, TYPE VARCHAR(9) NOT NULL, PASSWORD VARCHAR(255) NOT NULL, AUTH BIT(1) NOT NULL);
 ;
-;   --> CREATE TABLE TEMP (CODE INT(6) NOT NULL, USERNAME VARCHAR(30) NOT NULL, EMAIL VARCHAR(40) NOT NULL, PASSWORD VARCHAR(255) NOT NULL, AUTH BIT(1) NOT NULL);
+;   --> CREATE TABLE SIGN_UP (CODE INT(6) NOT NULL, USERNAME VARCHAR(30) NOT NULL, EMAIL VARCHAR(40) NOT NULL, PASSWORD VARCHAR(255) NOT NULL, AUTH BIT(1) NOT NULL);
 ;
-;   --> --> INSERT INTO USERS (USERNAME, EMAIL, TYPE, PASSWORD, AUTH) VALUES (*username*, *email@email.org*, *type*, *password*, 0/1);
-;
-;   --> --> INSERT INTO TEMP (CODE, USERNAME, EMAIL, PASSWORD, AUTH) VALUES (*random 6 digit code*, *username*, *email*, *password*, 0/1);
+;   --> CREATE TABLE RECOVER (CODE INT(6) NOT NULL, EMAIL VARCHAR(40) NOT NULL);

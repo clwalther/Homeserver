@@ -21,8 +21,8 @@ class Client
 
         # CONSTS
         $this->PATH = $GLOBALS["PATH"];
-        $this->PATH_STORE_IMG = $this->PATH."Frontend/assets/DATABASE/USERIMG/";
-        $this->PATH_STORE_DB  = $this->PATH."Backend/DATABASE/SHARE/";
+        $this->PATH_STORE_IMG = $this->PATH."Frontend/assets/database/user-img/";
+        $this->PATH_STORE_DB  = $this->PATH."Frontend/assets/database/share";
     }
 
     # SIGN IN
@@ -66,7 +66,7 @@ class Client
 
         if ($PASSWORD == $REPEATEPASSWORD) {  
             // PASSWORD IS GIVEN TWICE
-            $TABLE   = "TEMP";
+            $TABLE   = "SIGN_UP";
             $COLUMNS = ["*"];
             $LIKE    = [
                 "EMAIL" => $EMAIL
@@ -85,7 +85,7 @@ class Client
                 "AUTH"     => $AUTH
             ];
 
-            $database->insert("TEMP", $ARRAY);
+            $database->insert("SIGN_UP", $ARRAY);
             $utils->setCookie("EMAIL", $EMAIL);
             $utils->changeLocation("./auth", "_self");
             return 0;
@@ -100,21 +100,21 @@ class Client
 
         if ($queryAns->num_rows == 1) {
             // EMAIL ALREADY TRYING TO LOGIN
-            $database->delete("TEMP", $LIKE);
+            $database->delete("SIGN_UP", $LIKE);
         }
     }
-    function generateCode() {
+    function generateCode() { # utils
         $database = $GLOBALS["database"];
 
         $code = NULL;
 
-        $TABLE   = "TEMP";
+        $TABLE   = "SIGN_UP";
         $COLUMNS = ["*"];
         $LIKE    = [
             "CODE" => $code
         ];
 
-        while ($code == NULL or $database->select("TEMP", ["*"], $LIKE)->num_rows > 0) {
+        while ($code == NULL or $database->select("SIGN_UP", ["*"], $LIKE)->num_rows > 0) {
             $code = rand(100000, 999999);
             $LIKE = [
                 "CODE" => $code
@@ -129,7 +129,7 @@ class Client
         $error    = $GLOBALS["error"];
         $utils    = $GLOBALS["utils"];
 
-        $TABLE   = "TEMP";
+        $TABLE   = "SIGN_UP";
         $COLUMNS = ["*"];
         $LIKE    = [
             "CODE" => $CODE
@@ -151,7 +151,7 @@ class Client
                 ];
 
                 $database->insert($TABLE, $ARRAY);
-                $database->delete("TEMP", $LIKE);
+                $database->delete("SIGN_UP", $LIKE);
                 $queryAns = $database->select($TABLE, $COLUMNS, $ARRAY);
 
                 while ($answer = $queryAns->fetch_assoc()) {
@@ -177,8 +177,16 @@ class Client
         $utils->removeCookie("USERID");
         $utils->removeCookie("USERNAME");
     }
-    
 
+    # RECOVER
+    function recover($EMAIL) {
+        $database = $GLOBALS["database"];
+        $error    = $GLOBALS["error"];
+        $utils    = $GLOBALS["utils"];
+
+        
+
+    }
 
     function sendEmail($TYPE, $RECEIVER, $CONTEXT) {
         $command = "/bin/python ".$this->PATH."App/Auth.py ".$TYPE." ".$RECEIVER." ".$CONTEXT;

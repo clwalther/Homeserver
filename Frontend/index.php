@@ -7,24 +7,29 @@
     <title>Homeserver</title>
 
     <!-- global css -->
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="./assets/css/color.css">
-    <link rel="stylesheet" href="./assets/css/font.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/color.css">
+    <link rel="stylesheet" href="../assets/css/font.css">
 
     <!-- gloabl javascript -->
-    <script src="./assets/javascript/utils.js" async></script>
-    <script src="./assets/javascript/script.js" async></script>
+    <script src="../assets/javascript/utils.js" async></script>
+    <script src="../assets/javascript/client.js" async></script>
+    <script src="../assets/javascript/search.js" async></script>
+    <script src="../assets/javascript/script.js" async></script>
 
     <?php include './global.php'; ?>
 </head>
 <body>
     <?php 
         include './templates/header.php';
-    
+
         if($client->isLogedIn()) {
     ?>
         <!-- logged in -->
         <section>
+            <article>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab sed tempora temporibus animi debitis repellat similique odit, magnam fuga. Tenetur, ipsum! Quo, odio? Sunt non ipsam aliquid sapiente vero.
+            </article>
         </section>
     <?php } else { ?>
         <!-- logged out -->
@@ -38,12 +43,15 @@
                 <p>
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis dolore unde soluta facere, consequuntur sapiente officiis odio velit nostrum accusantium ratione laudantium doloribus
                 </p>
+                <button class="segoe-UI" onclick="window.open('/utils/signup', '_self');">
+                    Get started
+                </button>
             </article>
         </section>
     <?php 
         }
-        
-        include './templates/footer.php';
+
+        include './templates/footer.html';
     ?>
 </body>
 </html>

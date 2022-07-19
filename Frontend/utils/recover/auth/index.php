@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homeserver | Auth Sign Up</title>
+    <title>Homeserver | Auth Recover</title>
 
     <!-- global css -->
     <link rel="stylesheet" href="../../../assets/css/style.css">
@@ -29,25 +29,6 @@
             // CALL
             $client->signUpEmailAuth($CODE);
         }
-
-        function send() {
-            $utils    = $GLOBALS["utils"];
-            $client   = $GLOBALS["client"];
-            $database = $GLOBALS["database"];
-            // INIT
-            $TYPE     = "SIGNUP";
-            $TABLE    = "TEMP";
-            $RECEIVER = $utils->getCookie("EMAIL");
-            $COLUMNS  = ["*"];
-            $LIKE     = [
-                "EMAIL" => $RECEIVER
-            ];
-
-            $queryAns = $database->select($TABLE, $COLUMNS, $LIKE);
-            // CALL
-            $client->sendEmail($TYPE, $RECEIVER, $CODE);
-        }
-        send();
     ?>
 </head>
 <body>

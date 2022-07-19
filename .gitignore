@@ -1,7 +1,7 @@
 # FILES
 env
-/Frontend/assets/DATABASE/USERIMG/*.svg
-/Backend/DATABASE/SHARE/*.db
+/Frontend/assets/database/user-img/*.svg
+/Backend/database/share/*.db
 
 # FOLDERS
 /App/*
